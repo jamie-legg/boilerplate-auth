@@ -15,5 +15,12 @@
     "react-dom": "latest",
     "swr": "0.5.5"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "add": "^2.0.6",
+    "autoprefixer": "^10.2.6",
+    "postcss": "^8.3.0",
+    "tailwindcss": "^2.1.4",
+    "tailwindcss-filters": "^3.0.0"
+  }
 }

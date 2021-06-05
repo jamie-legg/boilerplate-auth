@@ -5,7 +5,7 @@ const Header = () => {
   const user = useUser()
 
   return (
-    <header>
+    <header className="header">
       <nav>
         <ul>
           <li>
@@ -34,6 +34,20 @@ const Header = () => {
         </ul>
       </nav>
       <style jsx>{`
+
+      .header {
+        --offset: 0rem;
+        position: fixed;
+        top: var(--offset);
+        left: var(--offset);
+        right: var(--offset);
+        width: calc(100% - var(--offset) * 2);
+        display: flex;
+        justify-content: space-between;
+        padding-left: min(5vmin, env(safe-area-inset-left));
+        padding-right: min(5vmin, env(safe-area-inset-right));
+        z-index: 2;
+      }
         nav {
           max-width: 42rem;
           margin: 0 auto;
@@ -56,8 +70,7 @@ const Header = () => {
           text-decoration: none;
         }
         header {
-          color: #fff;
-          background-color: #333;
+
         }
       `}</style>
     </header>

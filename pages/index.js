@@ -4,52 +4,73 @@ import Layout from '../components/layout'
 const Home = () => {
   const user = useUser()
 
+  if (process.browser) {
+    document.addEventListener("fullscreenchange", toggleFullScreenClass);
+    document.addEventListener("webkitfullscreenchange", toggleFullScreenClass);
+}
+  const toggleColorClass = () => {
+    document.body.dataset.color == 3 ? document.body.dataset.color = 0 : document.body.dataset.color++;
+  }
+
+const toggleFullScreenClass = () => {
+  document.body.classList.toggle("is-fullscreen", document.fullscreenElement || document.webkitFullscreenElement);
+}
+
+const toggleFullScreen = () => {
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen();
+    }
+  } else {
+    if (document.cancelFullScreen) {
+      document.cancelFullScreen();
+    } else if (document.webkitCancelFullScreen) {
+      document.webkitCancelFullScreen();
+    }
+  }
+}
+
+const init = () => {
+  if (process.browser) {
+    document.body.dataset.color = 0;
+    if (!document.fullscreenEnabled) {
+      btnFullScreen.remove();
+    }
+}
+
+}
+
+init();
+
   return (
     <Layout>
-      <h1>Magic Example</h1>
+      <div className="controls">
+        <button id="colors" onClick={() => toggleColorClass()} class="btn-colors" aria-label="Change colors" title="Change colors">
+          <svg data-icon="color" viewBox="0 0 512 512" width="100">
+            <path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z" />
+          </svg>
+        </button>
+        <button id="fullscreen" class="btn-fullscreen" onClick={() => toggleFullScreen()} aria-label="Toggle fullscreen" title="Toggle fullscreen">
+          <svg data-icon="open" viewBox="0 0 448 512" width="100">
+            <path d="M448 344v112a23.94 23.94 0 0 1-24 24H312c-21.39 0-32.09-25.9-17-41l36.2-36.2L224 295.6 116.77 402.9 153 439c15.09 15.1 4.39 41-17 41H24a23.94 23.94 0 0 1-24-24V344c0-21.4 25.89-32.1 41-17l36.19 36.2L184.46 256 77.18 148.7 41 185c-15.1 15.1-41 4.4-41-17V56a23.94 23.94 0 0 1 24-24h112c21.39 0 32.09 25.9 17 41l-36.2 36.2L224 216.4l107.23-107.3L295 73c-15.09-15.1-4.39-41 17-41h112a23.94 23.94 0 0 1 24 24v112c0 21.4-25.89 32.1-41 17l-36.19-36.2L263.54 256l107.28 107.3L407 327.1c15.1-15.2 41-4.5 41 16.9z" />
+          </svg>
+          <svg data-icon="close" viewBox="0 0 512 512" width="100">
+            <path d="M200 288H88c-21.4 0-32.1 25.8-17 41l32.9 31-99.2 99.3c-6.2 6.2-6.2 16.4 0 22.6l25.4 25.4c6.2 6.2 16.4 6.2 22.6 0L152 408l31.1 33c15.1 15.1 40.9 4.4 40.9-17V312c0-13.3-10.7-24-24-24zm112-64h112c21.4 0 32.1-25.9 17-41l-33-31 99.3-99.3c6.2-6.2 6.2-16.4 0-22.6L481.9 4.7c-6.2-6.2-16.4-6.2-22.6 0L360 104l-31.1-33C313.8 55.9 288 66.6 288 88v112c0 13.3 10.7 24 24 24zm96 136l33-31.1c15.1-15.1 4.4-40.9-17-40.9H312c-13.3 0-24 10.7-24 24v112c0 21.4 25.9 32.1 41 17l31-32.9 99.3 99.3c6.2 6.2 16.4 6.2 22.6 0l25.4-25.4c6.2-6.2 6.2-16.4 0-22.6L408 360zM183 71.1L152 104 52.7 4.7c-6.2-6.2-16.4-6.2-22.6 0L4.7 30.1c-6.2 6.2-6.2 16.4 0 22.6L104 152l-33 31.1C55.9 198.2 66.6 224 88 224h112c13.3 0 24-10.7 24-24V88c0-21.3-25.9-32-41-16.9z" />
+          </svg>
+        </button>
+      </div>
+      <div className="userControls">
+        {user && (
+          <>
+            <p>Currently logged in as:</p>
+            <pre>{JSON.stringify(user, null, 2)}</pre>
+          </>
+        )}
+      </div>
 
-      <p>Steps to test this authentication example:</p>
 
-      <ol>
-        <li>Click Login and enter an email.</li>
-        <li>
-          You'll be redirected to Home. Click on Profile, notice how your
-          session is being used through a token stored in a cookie.
-        </li>
-        <li>
-          Click Logout and try to go to Profile again. You'll get redirected to
-          Login.
-        </li>
-      </ol>
-
-      <p>
-        To learn more about Magic, visit their{' '}
-        <a
-          href="https://docs.magic.link/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          documentation
-        </a>
-        .
-      </p>
-
-      {user && (
-        <>
-          <p>Currently logged in as:</p>
-          <pre>{JSON.stringify(user, null, 2)}</pre>
-        </>
-      )}
-
-      <style jsx>{`
-        li {
-          margin-bottom: 0.5rem;
-        }
-        pre {
-          white-space: pre-wrap;
-          word-wrap: break-word;
-        }
-      `}</style>
     </Layout>
   )
 }

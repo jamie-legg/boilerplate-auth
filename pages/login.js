@@ -51,6 +51,17 @@ const Login = () => {
       </div>
       <style jsx>{`
         .login {
+          --offset: 4rem;
+          position: fixed;
+          top: var(--offset);
+          left: var(--offset);
+          right: var(--offset);
+          width: calc(100% - var(--offset) * 2);
+          display: flex;
+          justify-content: space-between;
+          padding-left: min(5vmin, env(safe-area-inset-left));
+          padding-right: min(5vmin, env(safe-area-inset-right));
+          z-index: 1;
           max-width: 21rem;
           margin: 0 auto;
           padding: 1rem;
